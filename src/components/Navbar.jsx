@@ -11,7 +11,6 @@ export default function Navbar({
   onLogout,
   isAdminView,
   setIsAdminView,
-  isAdmin,
   products = []
 }) {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -110,16 +109,14 @@ export default function Navbar({
             </button>
           )}
 
-          {/* Admin Switch Toggle Button (Visible for authorized admin session) */}
-          {isAdmin && (
-            <button
-              className={`admin-switch-btn ${isAdminView ? 'active' : ''}`}
-              onClick={() => setIsAdminView(!isAdminView)}
-            >
-              <ShieldCheck size={16} />
-              {isAdminView ? 'Storefront' : 'Admin Dashboard'}
-            </button>
-          )}
+          {/* Admin Switch Toggle Button (Always visible for easy testing & demo) */}
+          <button
+            className={`admin-switch-btn ${isAdminView ? 'active' : ''}`}
+            onClick={() => setIsAdminView(!isAdminView)}
+          >
+            <ShieldCheck size={16} />
+            {isAdminView ? 'Storefront' : 'Admin Dashboard'}
+          </button>
         </div>
       </div>
     </header>
