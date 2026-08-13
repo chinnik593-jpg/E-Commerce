@@ -1,99 +1,151 @@
 # 🛍️ SnapCart — Full-Stack E-Commerce Platform
-> **Computer Science & Engineering (CSE) Major Engineering Project**  
+> **Computer Science & Engineering (CSE) Major Project**  
 > **Lingayas Institute of Management and Technology (LIMT)**
 
 ---
 
-## 🎓 Academic Credentials & Project Metadata
+## 🎓 Project Credentials & Student Information
 
-| Field | Details |
+| Details Key | Information Value |
 | :--- | :--- |
-| **Institution** | **Lingayas Institute of Management and Technology (LIMT)** |
-| **Department** | **Computer Science & Engineering (CSE)** |
-| **Student Name** | **K. Teja** |
-| **Roll Number** | **23NA1A0595** |
-| **Faculty Supervisor / Guide** | **Prof. Prabhakar** |
-| **Project Title** | **SnapCart — Full-Stack E-Commerce Web Application** |
-| **Frontend Framework** | **React 18 + Vite 5 + Vanilla CSS (100% Light Theme)** |
-| **Backend REST API** | **Node.js + Express.js** |
-| **Database & Auth Engine** | **Supabase Cloud PostgreSQL + Google OAuth 2.0** |
-| **Version Control & Hosting** | **Git / GitHub + Render.com Free Web Service** |
-| **Live Repository** | [https://github.com/chinnik593-jpg/E-Commerce.git](https://github.com/chinnik593-jpg/E-Commerce.git) |
+| 🏫 **College / Institution** | **Lingayas Institute of Management and Technology (LIMT)** |
+| 🎓 **Department / Branch** | **Computer Science & Engineering (CSE)** |
+| 👤 **Student Name** | **K. Teja** |
+| 🆔 **Student Roll Number** | **23NA1A0595** |
+| 👨‍🏫 **Project Guide / Supervisor** | **Prof. Prabhakar** |
+| 💻 **Project Title** | **SnapCart — Full-Stack E-Commerce Web Application** |
+| 🎨 **Frontend Design** | **React 18 + Vite 5 + 100% Light Theme CSS** |
+| ⚙️ **Backend REST API** | **Node.js + Express.js API Server** |
+| 🗄️ **Database & Auth** | **Supabase PostgreSQL Cloud + Real Google OAuth 2.0** |
+| ☁️ **Deployment Hosting** | **GitHub + Render.com Free Web Service** |
+| 🔗 **GitHub Project Link** | [https://github.com/chinnik593-jpg/E-Commerce.git](https://github.com/chinnik593-jpg/E-Commerce.git) |
 
 ---
 
-## 📌 Executive Project Summary
+## 💡 What is SnapCart? (Simple Overview)
 
-**SnapCart** is a complete, production-grade e-commerce application designed to simulate real-world online shopping platforms like Flipkart and Amazon. Built as a CSE Major Engineering Project, SnapCart implements a multi-tier web application architecture featuring:
+**SnapCart** is a complete, full-stack online shopping website designed like real e-commerce websites (such as Flipkart and Amazon). 
 
-1. **Customer Storefront**: Built with a 100% Light Theme UI palette (crisp whites `#ffffff`, soft slate `#f8fafc`, vibrant blue `#2563eb`, pastel emerald `#10b981`), featuring real-time category filtering, autocomplete search, pincode delivery estimation, cart drawer, checkout, and order placement.
-2. **Super Admin All-In-One Control Suite**: Protected inventory management dashboard allowing sellers to toggle product availability (*In Stock / Out of Stock*) in one click, edit inventory numbers, upload product images directly from their PC, create custom categories, manage customer orders, and update store settings without touching code.
-3. **Dual Data Engine**: Real-time cloud persistence using **Supabase PostgreSQL Database** backed by a resilient Node.js Express REST API local store fallback.
-4. **Real Authentication**: Integrated with **Supabase Auth + Google OAuth 2.0**, displaying real Google account names, avatars, and emails with session persistence across page refreshes.
+It allows **Customers** to browse products, search items, filter categories, sign in with their Google accounts, add items to cart, and place orders. 
 
----
-
-## 🏗️ System Architecture & Data Flow
-
-```
-+-------------------------------------------------------------------------+
-|                           CUSTOMER BROWSER                              |
-|   (React 18 + Vite 5 Storefront | 100% Light Theme UI System)           |
-+------------------------------------+------------------------------------+
-                                     |
-               +---------------------+---------------------+
-               |                                           |
-               v                                           v
-+-------------------------------+         +-------------------------------+
-|     Supabase Auth Engine      |         |     Node.js Express REST API   |
-|   (Google OAuth 2.0 Sign In)  |         |   (Port 5000 / Dynamic Fallback)|
-+--------------+----------------+         +---------------+---------------+
-               |                                           |
-               v                                           v
-+-------------------------------+         +-------------------------------+
-|      Google OAuth Servers     |         |   Supabase PostgreSQL Cloud   |
-|  (accounts.google.com)        |         |  (https://twupxledocam...co)  |
-+-------------------------------+         +-------------------------------+
-```
+It also gives **Store Administrators** a powerful Admin Control Dashboard to manage inventory, change stock availability in 1 click, upload product images directly from their PC, create new categories, and track customer orders — all without touching any code!
 
 ---
 
-## ✨ Start-to-End Feature Breakdown
+## 🚀 Key Features at a Glance
 
-### 🛒 1. Customer Shopping Flow
-- **Real Google Sign-In**: Click **Sign in with Google** to authenticate via your Google Account. Session automatically persists on refresh using `supabase.auth.getSession()` and `onAuthStateChange()`.
-- **Category Navigation**: Switch between categories (*Mobiles*, *Fashion*, *Home*, *Grocery*, *Toys*, *Other*, or custom seller categories).
-- **Interactive Autocomplete Search**: Search products by title, category, or specifications with real-time price preview dropdowns.
-- **Product Inspect Modal**: Click any item card to view product details, ratings, stock status, and test delivery timelines using pincodes.
-- **Shopping Cart & Checkout**: Add products to cart, adjust quantities, calculate discounts/free shipping perks, and place orders. Stock checks prevent ordering more items than available in inventory.
+### 🛒 For Customers (Shoppers):
+1. **100% Light Theme Interface**: Clean, modern design with crisp whites (`#ffffff`), soft slates (`#f8fafc`), and royal blue accents (`#2563eb`). Zero dark background clutter.
+2. **Real Google Sign-In**: Login securely using your official Google Account via Supabase Auth. Your name, email, and Google profile picture appear in the top navbar.
+3. **Persistent Sessions**: Your login stays active even if you refresh or reopen the page.
+4. **Category Navigation**: Filter products by Mobiles, Fashion, Home, Grocery, Toys, Other, or custom categories.
+5. **Interactive Search**: Search bar with real-time autocomplete suggestions and price previews.
+6. **Product Detail Inspector**: Click any item card to see detailed specifications, ratings, stock status, and test delivery times using pincodes.
+7. **Shopping Cart & Checkout**: Add items, adjust quantities, calculate subtotal and free shipping perks, and place orders. Stock checks prevent ordering more than available stock.
 
-### 🛡️ 2. Super Admin Control Suite
-- **Dedicated Admin Portal**: Click **Admin Login** in the header to open the restricted Admin Security Login Modal.
-- **One-Click Stock Toggling**: Click **Mark Out of Stock** or **Mark In Stock** to instantly update storefront product availability.
-- **Stock Quantity Adjusters**: Click **`-`**, **`+5`**, or edit numerical stock counts directly.
-- **Real Product Image Uploader**: Select local image files directly from your computer (converted via FileReader Data URLs), paste image URLs, or choose sample presets.
-- **Custom Category Creator**: Add custom categories on the fly without changing code.
-- **Order Fulfillment Tracker**: Track customer orders and update status dropdowns (*Placed*, *Processing*, *Shipped*, *Out for Delivery*, *Delivered*, *Cancelled*).
-- **Live Store Configurator**: Edit store title, free delivery threshold, banner notices, and student project credentials from the **Store Settings** tab.
+### 🛡️ For Administrators (Store Managers):
+1. **Dedicated Admin Portal**: Open the restricted Admin Security Login Modal to authenticate into the Super Admin Dashboard.
+2. **1-Click Stock Status Toggling**: Click **Mark Out of Stock** or **Mark In Stock** to instantly update item availability across the website.
+3. **Stock Quantity Adjusters**: Click **`-`**, **`+5`**, or edit numerical stock counts directly.
+4. **Real Image Uploader**: Pick any photo directly from your local computer (using FileReader Data URLs), paste image URLs, or choose sample presets.
+5. **Custom Category Creator**: Add custom product categories on the fly.
+6. **Customer Order Fulfillment Tracker**: View customer orders and update delivery statuses (*Placed*, *Processing*, *Shipped*, *Out for Delivery*, *Delivered*, *Cancelled*).
+7. **Live Store Configurator**: Edit store title, free delivery limit, banner notice, and student credentials directly from the **Store Settings** tab without changing code.
 
 ---
 
-## 🛠️ Complete Technology Stack
+## 🛠️ All Technologies Used (Easy Table)
 
-| Layer | Technology | Description |
+| Layer | Technology | Simple Explanation |
 | :--- | :--- | :--- |
-| **Languages** | **JavaScript (ES6+)**, **HTML5**, **CSS3**, **SQL** | Core application logic, layout, responsive styling, and database queries |
-| **Frontend UI** | **React 18**, **Vite 5** | High-performance interactive component rendering and bundler |
-| **Styling** | **Vanilla CSS (100% Light Theme)** | Custom design system (`#ffffff`, `#f8fafc`, `#2563eb`, `#10b981`) |
-| **Icons** | **Lucide React** | Clean SVG vector interface icons |
-| **Backend Server** | **Node.js**, **Express.js** | Server REST API handling CORS, routing, image hosting, and logic |
-| **Database** | **Supabase (PostgreSQL Cloud DB)** | Live cloud data persistence (`https://twupxledocamoggrtmuf.supabase.co`) |
-| **Authentication** | **Supabase Auth + Google OAuth 2.0** | Secure Google sign-in and session lifecycle management |
-| **Hosting & Git** | **Git**, **GitHub**, **Render.com** | Source code management and 1-click cloud web service deployment |
+| **Programming Languages** | **JavaScript (ES6+)**, **HTML5**, **CSS3**, **SQL** | Core logic, layout structure, styling, and database queries |
+| **Frontend UI** | **React 18**, **Vite 5** | Renders fast interactive web pages and compiles code |
+| **Styling** | **Custom Vanilla CSS (100% Light Theme)** | Clean white design system (`#ffffff`, `#f8fafc`, `#2563eb`, `#10b981`) |
+| **Icons** | **Lucide React** | Modern vector SVG interface icons |
+| **Backend REST API** | **Node.js**, **Express.js** | Server API handling routing, CORS, image data, and logic |
+| **Database** | **Supabase (PostgreSQL Cloud DB)** | Stores products, categories, and customer orders live in the cloud |
+| **Authentication** | **Supabase Auth + Google OAuth 2.0** | Official Google account sign-in and session management |
+| **Hosting & Git** | **Git**, **GitHub**, **Render.com** | Version control code management and 1-click cloud hosting |
 
 ---
 
-## 🗄️ Database Schema (PostgreSQL / Supabase DDL)
+## 📐 How the System Works (Architecture Flow)
+
+```
+[ Customer / Admin Browser ]
+         │
+         ├───► (Google OAuth 2.0 Sign In) ───► [ Supabase Auth Engine ]
+         │                                            │
+         ├───► (React 18 + Vite 5 Storefront)         ▼
+         │                                    [ Google Servers ]
+         ▼
+[ Express REST API Server (Port 5000) ]
+         │
+         ▼
+[ Supabase PostgreSQL Cloud Database ] ───► Stores Products, Orders, & Categories
+```
+
+---
+
+## 🛒 Customer User Guide (Step-by-Step)
+
+1. **Open the Website**:
+   - Visit the home page at [http://localhost:3000](http://localhost:3000).
+2. **Sign In with Google**:
+   - Click **Sign in with Google** in the top navigation bar.
+   - Choose your Google account on the official Google OAuth login page. Your name and profile picture will immediately show in the header bar!
+3. **Search & Filter Products**:
+   - Use the category pills (*Mobiles*, *Fashion*, *Home*, *Grocery*, *Toys*, *Other*) to filter items.
+   - Type in the top search bar to see instant autocomplete suggestions and prices.
+4. **Inspect Product & Check Pincode**:
+   - Click any product card to open the detail inspect modal.
+   - Enter your 6-digit area pincode to check estimated delivery timelines.
+5. **Add to Cart & Checkout**:
+   - Click **Add to Cart** -> Open the **Cart Drawer** -> Click **Proceed to Checkout**.
+   - Fill in your shipping address and payment method (*UPI*, *Cash on Delivery*, *Card*, *NetBanking*).
+   - Click **Place Order** to complete your purchase!
+
+---
+
+## 🛡️ Admin Control Guide (Step-by-Step)
+
+1. **Open the Admin Portal**:
+   - Click **Admin Login** in the top header.
+   - Enter administrator credentials to unlock the Super Admin Control Dashboard.
+2. **Toggle Stock Status in 1 Click**:
+   - Click **Mark Out of Stock** or **Mark In Stock** on any product row to instantly update item availability on the storefront.
+3. **Change Stock Quantities**:
+   - Click **`-`** or **`+5`** or type any number in the stock box to adjust inventory counts.
+4. **Add New Products & Upload Images**:
+   - Click **+ Add New Product** -> Click **Upload Image File from PC** to select any photo from your computer!
+5. **Create Custom Categories**:
+   - Select **+ Add Custom Category...** in the category dropdown to create new categories.
+6. **Track Customer Orders**:
+   - View customer orders and update tracking statuses (*Placed*, *Processing*, *Shipped*, *Out for Delivery*, *Delivered*, *Cancelled*).
+7. **Change Live Store Settings**:
+   - Click **Store Settings** tab to edit store title, free delivery limit, banner notice, and student credentials.
+
+---
+
+## 🔌 Complete REST API Endpoints List
+
+| HTTP Method | API Endpoint | What It Does |
+| :--- | :--- | :--- |
+| **GET** | `/api/health` | Checks server health and returns CSE student project metadata |
+| **GET** | `/api/products` | Fetches all products from inventory |
+| **POST** | `/api/products` | Adds a new product to inventory |
+| **PUT** | `/api/products/:id` | Updates product details (title, price, image, etc.) |
+| **DELETE** | `/api/products/:id` | Removes a product from inventory |
+| **PATCH** | `/api/products/:id/stock` | Toggles stock status or updates stock quantity |
+| **GET** | `/api/categories` | Fetches list of active product categories |
+| **GET** | `/api/orders` | Fetches all customer orders |
+| **POST** | `/api/orders` | Places a new customer order |
+| **PATCH** | `/api/orders/:id/status` | Updates order fulfillment tracking status |
+| **POST** | `/api/auth/check-admin` | Verifies administrator security authorization |
+
+---
+
+## 🗄️ Database Tables (Supabase PostgreSQL SQL)
 
 ```sql
 -- 1. Products Table
@@ -136,81 +188,66 @@ CREATE TABLE IF NOT EXISTS orders (
 
 ---
 
-## 📡 REST API Endpoint Specifications
+## 💻 How to Run the Project on Your Computer (4 Simple Steps)
 
-| Method | Endpoint | Description | Request Payload | Response |
-| :--- | :--- | :--- | :--- | :--- |
-| **GET** | `/api/health` | Backend API status & academic metadata | None | `{ status: "OK", student: "K. Teja", ... }` |
-| **GET** | `/api/products` | Fetch all product inventory | None | `[ { id: "p1", title: "...", ... } ]` |
-| **POST** | `/api/products` | Add new product item | `{ title, price, category, image, ... }` | `{ id: "prod-123", ... }` |
-| **PUT** | `/api/products/:id` | Update existing product | `{ title, price, stock, ... }` | `{ id: "p1", ... }` |
-| **DELETE** | `/api/products/:id` | Remove product from inventory | None | `{ success: true }` |
-| **PATCH**| `/api/products/:id/stock` | Toggle stock or update count | `{ inStock: false, stock: 0 }` | `{ id: "p1", inStock: false, ... }` |
-| **GET** | `/api/categories` | Fetch category list | None | `["Mobiles", "Fashion", "Home", ...]` |
-| **GET** | `/api/orders` | Fetch customer orders list | None | `[ { id: "ORD-123", status: "Placed" } ]` |
-| **POST** | `/api/orders` | Place new customer order | `{ customerName, phone, items, ... }` | `{ id: "ORD-123", ... }` |
-| **PATCH**| `/api/orders/:id/status` | Update order delivery status | `{ status: "Shipped" }` | `{ success: true }` |
-| **POST** | `/api/auth/check-admin` | Secure server admin check | `{ email: "admin@snapcart.com" }` | `{ isAdmin: true }` |
-
----
-
-## 🚀 Local Development Setup Guide (4 Steps)
-
-### Step 1: Clone Repository
+### Step 1: Clone the Code from GitHub
 ```bash
 git clone https://github.com/chinnik593-jpg/E-Commerce.git
 cd E-Commerce
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Install Required Packages
 ```bash
 npm install
 ```
 
-### Step 3: Configure Environment Variables (`.env`)
-Create a `.env` file in the root directory:
+### Step 3: Set Up Environment File (`.env`)
+Create a file named `.env` in the project root directory:
 ```env
 VITE_SUPABASE_URL=https://twupxledocamoggrtmuf.supabase.co
 VITE_SUPABASE_ANON_KEY=sb_publishable_QP7ckttSixCQseQEVxr7IQ_eLDWE7ro
 PORT=5000
 ```
 
-### Step 4: Run Development Server
+### Step 4: Start the Project
 ```bash
 npm run dev
 ```
-- **Frontend App**: Open [http://localhost:3000](http://localhost:3000) (or `http://localhost:3001`).
-- **Backend API**: Check [http://localhost:5000/api/health](http://localhost:5000/api/health).
+- Open [http://localhost:3000](http://localhost:3000) in your browser!
 
 ---
 
-## ☁️ Cloud Deployment Guide (Render.com)
+## ☁️ How to Host on Render.com (100% Free)
 
-1. Sign in to [Render Dashboard](https://dashboard.render.com).
-2. Click **`New +`** -> Select **`Web Service`**.
+1. Go to [dashboard.render.com](https://dashboard.render.com).
+2. Click **New +** -> Select **Web Service**.
 3. Connect your GitHub repository: `chinnik593-jpg/E-Commerce`.
-4. Configure service settings:
+4. Enter settings:
    - **Name**: `snapcart-app`
    - **Build Command**: `npm install && npm run build`
    - **Start Command**: `npm start`
    - **Instance Type**: `Free`
-5. Click **`Create Web Service`**.
-6. Render will automatically build and publish your app with a live HTTPS URL!
+5. Click **Create Web Service**. Render will publish your site live with a public HTTPS link!
 
 ---
 
-## ❓ FAQ & Troubleshooting for Friends & Evaluators
+## ❓ Frequently Asked Questions (FAQ)
 
-- **How do I log in as Admin?**
-  - Click **Admin Login** in the top navbar. Type `admin@snapcart.com` and PIN `1234` (or `teja123`) to unlock the Super Admin Dashboard.
-- **How do I log in with Google?**
-  - Click **Sign in with Google** in the header. Select your Google account on the official Google OAuth page to log in.
-- **How do I upload a product image from PC?**
-  - In Admin Dashboard, click **+ Add New Product** -> Click **Upload Image File from PC** -> Pick any image file on your computer.
-- **What if Port 5000 is occupied?**
-  - The Express server in `server/index.js` automatically detects port conflicts (`EADDRINUSE`) and retries on `5001`, `5002`, `5003`, ensuring 100% server uptime.
+- **Q: How do I log in as Admin?**
+  - **A**: Click **Admin Login** in the top navbar. Enter administrator credentials to unlock the Super Admin Dashboard.
+- **Q: How does Google login work?**
+  - **A**: Click **Sign in with Google**. The website securely connects to Google OAuth 2.0 via Supabase Auth and logs you in with your real Google name and photo.
+- **Q: Can I upload photos from my computer?**
+  - **A**: Yes! In the Admin Dashboard, click **+ Add New Product** -> Click **Upload Image File from PC** to pick any photo from your computer.
+- **Q: What if Port 5000 is busy?**
+  - **A**: The Express backend server automatically retries on ports `5001`, `5002`, `5003`, so the app never crashes.
 
 ---
 
-### 🎓 Academic Citation & Credits
-Developed by **K. Teja** (Roll No: `23NA1A0595`), Department of Computer Science & Engineering (CSE), **Lingayas Institute of Management and Technology (LIMT)** under the supervision of **Prof. Prabhakar**.
+## 🏆 Project Conclusion & Acknowledgments
+
+This CSE Major Engineering Project demonstrates a full-stack e-commerce system combining modern web development practices, real-time database synchronization, Google OAuth authentication, and complete administrative control.
+
+Special thanks to project guide **Prof. Prabhakar** and **Lingayas Institute of Management and Technology (LIMT)** for academic supervision and support.
+
+**Developed by**: K. Teja (Roll No: `23NA1A0595`), Department of Computer Science & Engineering (CSE).
