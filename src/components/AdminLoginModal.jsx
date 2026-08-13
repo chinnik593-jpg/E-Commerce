@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { X, ShieldCheck, Lock, KeyRound, AlertCircle } from 'lucide-react';
 
 export default function AdminLoginModal({ isOpen, onClose, onAdminAuthSuccess, showToast }) {
-  const [adminEmail, setAdminEmail] = useState('admin@snapcart.com');
-  const [adminPasscode, setAdminPasscode] = useState('1234');
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPasscode, setAdminPasscode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -30,7 +30,7 @@ export default function AdminLoginModal({ isOpen, onClose, onAdminAuthSuccess, s
         onClose();
       }, 300);
     } else {
-      setError('Invalid Admin Security Passcode or Email. Demo PIN is 1234.');
+      setError('Invalid Administrator email or security PIN.');
       setLoading(false);
     }
   };
@@ -59,10 +59,6 @@ export default function AdminLoginModal({ isOpen, onClose, onAdminAuthSuccess, s
           <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '20px' }}>
             Enter administrator credentials to unlock Super Admin Inventory & Control Center
           </p>
-
-          <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', padding: '10px 14px', borderRadius: '8px', fontSize: '0.8rem', color: '#1e40af', marginBottom: '18px', textAlign: 'left' }}>
-            💡 <strong>Demo Admin Passcode:</strong> Email: <code>admin@snapcart.com</code> | PIN: <code>1234</code>
-          </div>
 
           {error && (
             <div style={{
@@ -102,7 +98,7 @@ export default function AdminLoginModal({ isOpen, onClose, onAdminAuthSuccess, s
             <input
               type="password"
               className="input-field"
-              placeholder="Enter PIN (e.g. 1234)"
+              placeholder="Enter Security PIN"
               value={adminPasscode}
               onChange={(e) => setAdminPasscode(e.target.value)}
               required
