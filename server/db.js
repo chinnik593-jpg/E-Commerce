@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createClient } from '@supabase/supabase-js';
 import { initialProducts } from './seedData.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,7 +9,11 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'store.json');
 
-// Memory store for active OTP codes
+// Supabase Live Connection
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://twupxledocamoggrtmuf.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_QP7ckttSixCQseQEVxr7IQ_eLDWE7ro';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const otpSessions = new Map();
 
 function initDb() {
@@ -32,7 +37,6 @@ function readData() {
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
-    console.error("Error reading db file, re-initializing:", err);
     initDb();
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
   }
@@ -41,6 +45,43 @@ function readData() {
 function writeData(data) {
   initDb();
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+// Sync to Supabase in background
+async function syncProductToSupabase(product) {
+  try {
+    await supabase.from('products').upsert({
+      id: product.id,
+      title: product.title,
+      category: product.category,
+      price: product.price,
+      original_price: product.originalPrice,
+      discount: product.discount,
+      rating: product.rating,
+      ratings_count: product.ratingsCount,
+      stock: product.stock,
+      in_stock: product.inStock,
+      assured: product.assured,
+      image: product.image,
+      specs: product.specs,
+      description: product.description
+    });
+  } catch (e) {}
+}
+
+async function syncOrderToSupabase(order) {
+  try {
+    await supabase.from('orders').insert({
+      id: order.id,
+      customer_name: order.customerName,
+      phone: order.phone,
+      address: order.address,
+      items: order.items,
+      total_amount: order.totalAmount,
+      payment_method: order.paymentMethod,
+      status: order.status
+    });
+  } catch (e) {}
 }
 
 export const db = {
@@ -68,19 +109,20 @@ export const db = {
       stock: Number(productData.stock) || 0,
       inStock: Number(productData.stock) > 0,
       assured: true,
-      image: productData.image || "/images/other_headphones.jpg",
+      image: productData.image || "/images/headphones.jpg",
       specs: Array.isArray(productData.specs) ? productData.specs : (productData.specs ? productData.specs.split('\n').filter(Boolean) : ["Genuine Quality Product"]),
-      description: productData.description || "Authentic quality product listed on Flipkart platform."
+      description: productData.description || "Authentic quality product listed on SnapCart platform."
     };
 
     data.products.unshift(newProduct);
-
-    // If new category, add to categories list if not present
     if (newProduct.category && !data.categories.includes(newProduct.category)) {
       data.categories.push(newProduct.category);
     }
-
     writeData(data);
+
+    // Live sync to Supabase
+    syncProductToSupabase(newProduct);
+
     return newProduct;
   },
 
@@ -103,12 +145,14 @@ export const db = {
     };
 
     data.products[index] = updatedProduct;
-
     if (updatedProduct.category && !data.categories.includes(updatedProduct.category)) {
       data.categories.push(updatedProduct.category);
     }
-
     writeData(data);
+
+    // Live sync to Supabase
+    syncProductToSupabase(updatedProduct);
+
     return updatedProduct;
   },
 
@@ -121,10 +165,11 @@ export const db = {
     if (!product.inStock) {
       product.stock = 0;
     } else if (product.stock <= 0) {
-      product.stock = 10; // Default restock value when set to In Stock
+      product.stock = 10;
     }
 
     writeData(data);
+    syncProductToSupabase(product);
     return product;
   },
 
@@ -134,6 +179,9 @@ export const db = {
     data.products = data.products.filter(p => p.id !== id);
     if (data.products.length < initialLen) {
       writeData(data);
+      try {
+        supabase.from('products').delete().eq('id', id);
+      } catch (e) {}
       return true;
     }
     return false;
@@ -163,7 +211,6 @@ export const db = {
       status: "Placed"
     };
 
-    // Deduct stock for ordered items
     newOrder.items.forEach(item => {
       const prod = data.products.find(p => p.id === item.id);
       if (prod) {
@@ -171,11 +218,13 @@ export const db = {
         if (prod.stock === 0) {
           prod.inStock = false;
         }
+        syncProductToSupabase(prod);
       }
     });
 
     data.orders.unshift(newOrder);
     writeData(data);
+    syncOrderToSupabase(newOrder);
     return newOrder;
   },
 
@@ -185,15 +234,17 @@ export const db = {
     if (!order) return null;
     order.status = status;
     writeData(data);
+    try {
+      supabase.from('orders').update({ status }).eq('id', id);
+    } catch (e) {}
     return order;
   },
 
-  // OTP Auth helpers
   sendOtp: (phone) => {
-    const otp = "123456"; // Fixed demo OTP for user convenience
+    const otp = "123456";
     otpSessions.set(phone, {
       code: otp,
-      expiresAt: Date.now() + 5 * 60 * 1000 // 5 minutes
+      expiresAt: Date.now() + 5 * 60 * 1000
     });
     return { success: true, message: `OTP sent successfully to ${phone}`, demoOtp: "123456" };
   },

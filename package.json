@@ -11,6 +11,8 @@
     "start": "node server/index.js"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "lucide-react": "^0.380.0",
