@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, ShoppingCart, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Star, ShieldCheck } from 'lucide-react';
 
 export default function ProductCard({
   product,
@@ -15,7 +15,7 @@ export default function ProductCard({
       <div className="product-image-container">
         <img src={product.image} alt={product.title} />
 
-        {/* Stock Badge */}
+        {/* Stock Status Badge */}
         <span className={`stock-badge ${isOutOfStock ? 'out-of-stock' : 'in-stock'}`}>
           {isOutOfStock ? 'Out of Stock' : `In Stock (${product.stock})`}
         </span>
@@ -24,7 +24,7 @@ export default function ProductCard({
       <div>
         <h3 className="product-title" title={product.title}>{product.title}</h3>
 
-        {/* Rating and Assured Tag */}
+        {/* Rating and Custom Verified Badge */}
         <div className="product-rating">
           <div className="rating-badge">
             <span>{product.rating}</span>
@@ -33,11 +33,20 @@ export default function ProductCard({
           <span className="ratings-count">({product.ratingsCount ? product.ratingsCount.toLocaleString() : '100+'})</span>
 
           {product.assured && (
-            <img
-              src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png"
-              alt="Flipkart Assured"
-              className="assured-logo"
-            />
+            <span style={{
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              background: '#e0e7ff',
+              color: '#3730a3',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '2px',
+              marginLeft: 'auto'
+            }}>
+              <ShieldCheck size={12} color="#4338ca" /> Verified
+            </span>
           )}
         </div>
 
@@ -53,7 +62,7 @@ export default function ProductCard({
         </div>
 
         <div className="free-delivery-tag">
-          ✓ Free Delivery by Tomorrow
+          ✓ Free Delivery Available
         </div>
       </div>
 

@@ -1,115 +1,63 @@
-# Flipkart-Style E-Commerce App with Admin Inventory & Stock Control
+# SnapCart - Full-Stack E-Commerce Platform
 
-A full-stack, production-ready E-Commerce application inspired by Flipkart. Built with a Node.js REST API backend, persistent JSON database, mobile phone OTP authentication, end-to-end shopping experience, comprehensive admin inventory control (Add/Edit/Delete/Out of Stock toggle), and pre-configured for 100% Free deployment on **Render.com**.
+A custom, modern E-Commerce web application built as a CSE Major Engineering Project. Features a Node.js REST API backend, persistent database, mobile phone OTP authentication, end-to-end shopping experience, comprehensive admin inventory control (Add/Edit/Delete/Out of Stock toggle), and pre-configured support for **Render.com** and **Supabase**.
 
 ---
 
-## 🎓 Academic & Project Credentials
+## 🎓 Academic Credentials
 
+- **Project Title**: SnapCart - Full-Stack E-Commerce Platform with Admin Stock Management
 - **Student Name**: K. Taje
 - **Roll Number**: 23NA1A0595
-- **Branch**: Computer Science & Engineering (CSE)
-- **Faculty Supervisor / Teacher**: Prof. Prabhakar
-- **Project Title**: Full-Stack Flipkart Clone E-Commerce Application with Admin Stock Management & Render Free Hosting
+- **Department**: Computer Science & Engineering (CSE)
+- **Faculty Supervisor / Guide**: Prof. Prabhakar
 
 ---
 
-## 🌟 Key Features
+## ⚡ Key Features
 
-### 🛍️ Customer Storefront
-- **Flipkart Branding**: Signature yellow & blue theme, Flipkart Assured badges, SuperCoins rewards.
-- **Categories Nav**: 📱 **Mobiles**, 👗 **Fashion**, 🏠 **Home**, 🛒 **Grocery**, 🧸 **Toys**, and 📦 **Other**.
-- **Live Search & Autocomplete**: Instant search by title, category, or description.
-- **Interactive Stock Badges**: Real-time "In Stock" vs "Out of Stock" indicators. Out of stock items feature disabled buy buttons.
-- **Product Detail Modal**: Specifications grid, pincode delivery checker, buy now/add to cart.
-- **Cart & Checkout**: Multi-step checkout with address details, payment method selection, and order placement.
-- **📱 Mobile OTP Login**: Enter any 10-digit mobile number, receive OTP code `123456`, and verify.
+- **Product Categories**: 📱 **Mobiles**, 👗 **Fashion**, 🏠 **Home**, 🛒 **Grocery**, 🧸 **Toys**, and 📦 **Other**.
+- **Admin Management**: Add/Edit/Delete products, one-click **In Stock / Out of Stock** toggling, stock quantity modifiers, and customer order status tracker.
+- **Dynamic Categories**: Admin can add products under **Other** or create new custom categories on the fly.
+- **Mobile OTP Login**: 10-digit mobile number input + 6-digit SMS OTP verification (Demo code `123456`).
+- **Database Options**:
+  1. Built-in zero-config persistent storage (`server/data/store.json`) for instant 0-cost deployment on Render.com.
+  2. Free Cloud Supabase SQL Database (`supabase/schema.sql`).
 
-### 🛡️ Admin Inventory & Stock Control Panel
-- **Quick Mode Switcher**: Header toggle button to switch between Customer View and Admin Portal.
-- **⚡ One-Click Stock Toggle**: Instant "Mark In Stock" or "Mark Out of Stock" button per item.
-- **🔢 Stock Level Control**: Increment/decrement or directly type stock quantity.
-- **📦 Add New Product (including "Other" & Custom Categories)**: Create items under Mobiles, Fashion, Home, Grocery, Toys, **Other**, or any custom category name.
-- **✏ Edit & 🗑 Delete Products**: Complete CRUD functionality.
-- **📊 Analytics Dashboard**: Live metrics for Total Revenue, Active Products, Total Orders, and Out-of-Stock alerts.
-- **📋 Order Status Tracking**: Monitor customer orders and update status (Placed -> Shipped -> Delivered).
+---
+
+## 🗄️ Connecting Supabase (Optional Free Cloud DB)
+
+1. Create a free project at [Supabase](https://supabase.com).
+2. Open the SQL Editor in Supabase and run the script from [`supabase/schema.sql`](file:///C:/Users/harsha/.gemini/antigravity/scratch/ecommerce-app/supabase/schema.sql).
+3. Create a `.env` file in the root directory:
+   ```env
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+---
+
+## ☁️ Deploying Free of Cost on Render.com
+
+1. Push your code to GitHub.
+2. Log into [Render.com](https://dashboard.render.com/) -> Click **New +** -> **Web Service**.
+3. Select this repository. Render automatically uses `render.yaml`:
+   - **Environment**: Node
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Plan**: Free
 
 ---
 
 ## 🚀 How to Run Locally
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm
-
-### Installation & Launch
-1. Open your terminal in the project directory:
-   ```bash
-   cd C:\Users\harsha\.gemini\antigravity\scratch\ecommerce-app
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Launch backend server and frontend client concurrently:
-   ```bash
-   npm run dev
-   ```
-   - **Frontend**: http://localhost:3000
-   - **Backend API**: http://localhost:5000
-   - **API Health Check**: http://localhost:5000/api/health
-
----
-
-## ☁️ How to Deploy Free of Cost on Render.com
-
-This project is 100% optimized for **Render.com's Free Web Service Tier** (0 cost, no paid SQL database needed).
-
-### Steps to Deploy:
-1. Push your repository to **GitHub** or **GitLab**.
-2. Go to [https://dashboard.render.com/](https://dashboard.render.com/) and click **New +** -> **Web Service**.
-3. Connect your GitHub repository.
-4. Select the build settings (or let Render auto-detect from `render.yaml`):
-   - **Environment**: Node
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
-   - **Plan**: Free
-5. Click **Create Web Service**. Your live Flipkart clone URL will be live in 2-3 minutes!
-
----
-
-## 📂 Project Structure
-
+```bash
+cd C:\Users\harsha\.gemini\antigravity\scratch\ecommerce-app
+npm install
+npm run dev
 ```
-ecommerce-app/
-├── render.yaml               # Render.com Free Deployment Blueprint
-├── package.json              # Express, React, Vite, Lucide dependencies
-├── vite.config.js            # Vite config with API proxy
-├── index.html                # Entry HTML with fonts
-├── server/
-│   ├── index.js              # Express REST API & static build server
-│   ├── db.js                 # Persistent File-based DB controller
-│   └── seedData.js           # Default products for Mobiles, Fashion, Home, Grocery, Toys, Other
-├── public/
-│   └── images/               # High-res generated product imagery
-└── src/
-    ├── main.jsx              # React mounting root
-    ├── App.jsx               # Application main state controller
-    ├── styles/
-    │   └── index.css         # Flipkart design system & CSS tokens
-    └── components/
-        ├── ProjectBadge.jsx  # Academic Banner (K. Taje | 23NA1A0595 | CSE | Prof. Prabhakar)
-        ├── Navbar.jsx        # Top Nav with search, OTP login & Admin switch
-        ├── CategoryNav.jsx   # Mobiles, Fashion, Home, Grocery, Toys, Other
-        ├── HeroSlider.jsx    # Promotional carousel
-        ├── ProductGrid.jsx   # Product card grid & stock filters
-        ├── ProductCard.jsx   # Individual product card with stock badges
-        ├── ProductDetailModal.jsx
-        ├── PhoneOtpModal.jsx # Mobile Phone + 6-digit OTP modal
-        ├── CartDrawer.jsx    # Slide-out shopping cart
-        ├── CheckoutModal.jsx # Address & Payment checkout
-        ├── AdminDashboard.jsx # Inventory table, quick stock toggle, orders
-        └── AdminProductModal.jsx # Add/Edit form with 'Other' category support
-```
+
+- **Frontend App**: `http://localhost:3000`
+- **Backend API**: `http://localhost:5000`
+- **API Health Check**: `http://localhost:5000/api/health`

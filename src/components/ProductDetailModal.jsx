@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, ShoppingCart, Zap, CheckCircle, Truck, ShieldCheck, MapPin } from 'lucide-react';
+import { X, Star, ShoppingCart, Zap, ShieldCheck, MapPin } from 'lucide-react';
 
 export default function ProductDetailModal({ product, onClose, onAddToCart, onBuyNow }) {
   const [pincode, setPincode] = useState('500001');
@@ -21,12 +21,12 @@ export default function ProductDetailModal({ product, onClose, onAddToCart, onBu
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" style={{ maxWidth: '780px' }} onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h3>Product Specifications & Details</h3>
+          <h3>Product Specifications & Overview</h3>
           <button className="close-btn" onClick={onClose}><X size={20} /></button>
         </div>
 
         <div className="modal-body" style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '24px' }}>
-          {/* Left Column: Product Image & Badges */}
+          {/* Left Column */}
           <div>
             <div style={{
               border: '1px solid #f0f0f0',
@@ -78,7 +78,7 @@ export default function ProductDetailModal({ product, onClose, onAddToCart, onBu
             </div>
           </div>
 
-          {/* Right Column: Information & Specs */}
+          {/* Right Column */}
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--fk-blue)', fontWeight: 600 }}>
               Category: {product.category}
@@ -94,11 +94,20 @@ export default function ProductDetailModal({ product, onClose, onAddToCart, onBu
               </div>
               <span className="ratings-count">({product.ratingsCount ? product.ratingsCount.toLocaleString() : '100+'} Ratings)</span>
               {product.assured && (
-                <img
-                  src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png"
-                  alt="Assured"
-                  className="assured-logo"
-                />
+                <span style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  background: '#e0e7ff',
+                  color: '#3730a3',
+                  padding: '2px 8px',
+                  borderRadius: '4px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  marginLeft: 'auto'
+                }}>
+                  <ShieldCheck size={14} color="#4338ca" /> SnapCart Verified
+                </span>
               )}
             </div>
 
@@ -112,10 +121,10 @@ export default function ProductDetailModal({ product, onClose, onAddToCart, onBu
               )}
             </div>
 
-            {/* Delivery Pincode Checker */}
+            {/* Pincode Checker */}
             <div style={{ background: '#f8fafc', padding: '12px 16px', borderRadius: '6px', marginBottom: '16px', border: '1px solid #e2e8f0' }}>
               <div style={{ fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                <MapPin size={16} color="var(--fk-blue)" /> Check Delivery Availability:
+                <MapPin size={16} color="var(--fk-blue)" /> Delivery Availability:
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <input
@@ -139,9 +148,9 @@ export default function ProductDetailModal({ product, onClose, onAddToCart, onBu
               )}
             </div>
 
-            {/* Description & Specifications */}
+            {/* Specs */}
             <div style={{ marginBottom: '16px' }}>
-              <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '4px' }}>Product Overview:</h4>
+              <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '4px' }}>Overview:</h4>
               <p style={{ fontSize: '0.88rem', color: '#333' }}>{product.description}</p>
             </div>
 
