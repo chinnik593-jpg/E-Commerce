@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { X, PlusCircle, Edit, Image, Tag, DollarSign, Package } from 'lucide-react';
+import { X, PlusCircle, Edit, Upload, Image as ImageIcon, Check } from 'lucide-react';
+
+const PRESET_IMAGES = [
+  { name: 'Smartphone', url: '/images/mobile_phone.jpg' },
+  { name: 'Denim Jacket', url: '/images/fashion_jacket.jpg' },
+  { name: 'Desk Lamp', url: '/images/home_lamp.jpg' },
+  { name: 'Organic Tea Box', url: '/images/grocery_tea.jpg' },
+  { name: 'RC Racing Car', url: '/images/toy_car.jpg' },
+  { name: 'Headphones', url: '/images/headphones.jpg' }
+];
 
 export default function AdminProductModal({
   isOpen,
@@ -44,6 +53,19 @@ export default function AdminProductModal({
 
   if (!isOpen) return null;
 
+  // Handle direct file upload from PC
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+        if (showToast) showToast('📸 Image uploaded successfully!');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -67,19 +89,19 @@ export default function AdminProductModal({
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-card" style={{ maxWidth: '620px' }} onClick={e => e.stopPropagation()}>
+      <div className="modal-card" style={{ maxWidth: '640px' }} onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <h3>
             {productToEdit ? <Edit size={20} style={{ display: 'inline', marginRight: '6px' }} /> : <PlusCircle size={20} style={{ display: 'inline', marginRight: '6px' }} />}
             {productToEdit ? 'Edit Product Item' : 'Add New Inventory Item'}
           </h3>
-          <button className="close-btn" onClick={onClose}><X size={20} /></button>
+          <button className="close-btn" onClick={onClose}><X size={18} /></button>
         </div>
 
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Product Title:</label>
+            <div style={{ marginBottom: '14px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Product Title:</label>
               <input
                 type="text"
                 className="input-field"
@@ -91,9 +113,9 @@ export default function AdminProductModal({
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Category:</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Category:</label>
                 <select
                   className="input-field"
                   style={{ marginBottom: 0 }}
@@ -112,7 +134,7 @@ export default function AdminProductModal({
 
               {category === 'CUSTOM' && (
                 <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Custom Category Name:</label>
+                  <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Custom Category Name:</label>
                   <input
                     type="text"
                     className="input-field"
@@ -126,7 +148,7 @@ export default function AdminProductModal({
               )}
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Selling Price (₹):</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Selling Price (₹):</label>
                 <input
                   type="number"
                   className="input-field"
@@ -139,9 +161,9 @@ export default function AdminProductModal({
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Original MRP Price (₹):</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Original Price (MRP ₹):</label>
                 <input
                   type="number"
                   className="input-field"
@@ -153,7 +175,7 @@ export default function AdminProductModal({
               </div>
 
               <div>
-                <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Stock Quantity:</label>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Stock Quantity:</label>
                 <input
                   type="number"
                   className="input-field"
@@ -166,20 +188,93 @@ export default function AdminProductModal({
               </div>
             </div>
 
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Image URL / Asset Path:</label>
-              <input
-                type="text"
-                className="input-field"
-                style={{ marginBottom: 0 }}
-                placeholder="/images/headphones.jpg"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />
+            {/* REAL PRODUCT IMAGE UPLOADER & PREVIEW */}
+            <div style={{ background: '#f8fafc', padding: '14px', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '14px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1e293b', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                <ImageIcon size={18} color="#2563eb" /> Product Image Upload & Selection:
+              </label>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '14px', alignItems: 'center' }}>
+                {/* Live Preview Box */}
+                <div style={{
+                  width: '120px',
+                  height: '110px',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '8px',
+                  background: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px',
+                  overflow: 'hidden'
+                }}>
+                  {image ? (
+                    <img src={image} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  ) : (
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>No Image</span>
+                  )}
+                </div>
+
+                {/* Upload Options */}
+                <div>
+                  <div style={{ marginBottom: '8px' }}>
+                    <label style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      background: '#2563eb',
+                      color: 'white',
+                      padding: '8px 16px',
+                      borderRadius: '6px',
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}>
+                      <Upload size={14} /> Upload Image File from PC
+                      <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
+                    </label>
+                  </div>
+
+                  <input
+                    type="text"
+                    className="input-field"
+                    style={{ marginBottom: 0, fontSize: '0.8rem', padding: '6px 10px' }}
+                    placeholder="Or paste Image URL (e.g. https://...)"
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Quick Preset Selector */}
+              <div style={{ marginTop: '10px' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', marginBottom: '4px' }}>Or Select Sample Asset:</div>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  {PRESET_IMAGES.map((img) => (
+                    <button
+                      type="button"
+                      key={img.name}
+                      onClick={() => setImage(img.url)}
+                      style={{
+                        padding: '3px 8px',
+                        fontSize: '0.72rem',
+                        borderRadius: '4px',
+                        border: image === img.url ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                        background: image === img.url ? '#eff6ff' : 'white',
+                        color: image === img.url ? '#2563eb' : '#475569',
+                        cursor: 'pointer',
+                        fontWeight: image === img.url ? 700 : 500
+                      }}
+                    >
+                      {img.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Product Description:</label>
+            <div style={{ marginBottom: '14px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Product Description:</label>
               <textarea
                 className="input-field"
                 style={{ height: '60px', resize: 'none', marginBottom: 0 }}
@@ -190,11 +285,11 @@ export default function AdminProductModal({
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ fontSize: '0.82rem', fontWeight: 600 }}>Specifications (one per line):</label>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>Specifications (one per line):</label>
               <textarea
                 className="input-field"
                 style={{ height: '60px', resize: 'none', marginBottom: 0 }}
-                placeholder="100% Genuine Quality&#10;1 Year Flipkart Warranty"
+                placeholder="100% Authentic Product&#10;Includes 1 Year Warranty"
                 value={specs}
                 onChange={(e) => setSpecs(e.target.value)}
               />

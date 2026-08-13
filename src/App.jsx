@@ -5,14 +5,14 @@ import CategoryNav from './components/CategoryNav';
 import HeroSlider from './components/HeroSlider';
 import ProductGrid from './components/ProductGrid';
 import ProductDetailModal from './components/ProductDetailModal';
-import PhoneOtpModal from './components/PhoneOtpModal';
+import AuthModal from './components/AuthModal';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
 import AdminDashboard from './components/AdminDashboard';
 import AdminProductModal from './components/AdminProductModal';
 import OrderSuccessModal from './components/OrderSuccessModal';
 import { initialProducts } from '../server/seedData';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export default function App() {
   const [products, setProducts] = useState(initialProducts);
@@ -21,11 +21,13 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  const [user, setUser] = useState({
-    name: 'K. Taje',
-    phone: '9876543210',
-    role: 'customer',
-    superCoins: 250
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('snapcart_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
   });
 
   // UI Modals State
@@ -48,18 +50,16 @@ export default function App() {
     }, 3000);
   };
 
-  // 1. Fetch initial products & orders from API
+  // Fetch initial products & orders
   const fetchProducts = async () => {
     try {
       const res = await fetch('/api/products');
       if (res.ok) {
         const data = await res.json();
-        if (data && data.length > 0) {
-          setProducts(data);
-        }
+        if (data && data.length > 0) setProducts(data);
       }
     } catch (err) {
-      console.log('Using local client state for products');
+      console.log('Using local state for products');
     }
   };
 
@@ -93,7 +93,7 @@ export default function App() {
     fetchOrders();
   }, []);
 
-  // Handlers for Cart
+  // Cart Handlers
   const handleAddToCart = (product) => {
     if (!product.inStock || product.stock <= 0) {
       showToast('❌ Item is currently Out of Stock!');
@@ -112,7 +112,7 @@ export default function App() {
       return [...prev, { ...product, quantity: 1 }];
     });
 
-    showToast(`🛒 Added "${product.title.slice(0, 24)}..." to Cart!`);
+    showToast(`🛒 Added "${product.title.slice(0, 22)}..." to Cart!`);
   };
 
   const handleUpdateCartQty = (id, newQty) => {
@@ -125,10 +125,10 @@ export default function App() {
 
   const handleRemoveCartItem = (id) => {
     setCart(prev => prev.filter(item => item.id !== id));
-    showToast('Removed item from Cart');
+    showToast('Item removed from Cart');
   };
 
-  // Handlers for Admin Stock & Product Management
+  // Admin Handlers
   const handleToggleStock = async (id, currentInStockState) => {
     const nextState = !currentInStockState;
 
@@ -142,29 +142,10 @@ export default function App() {
         const updated = await res.json();
         setProducts(prev => prev.map(p => p.id === id ? updated : p));
       } else {
-        // Fallback local state
-        setProducts(prev => prev.map(p => {
-          if (p.id === id) {
-            return {
-              ...p,
-              inStock: nextState,
-              stock: nextState ? (p.stock || 10) : 0
-            };
-          }
-          return p;
-        }));
+        setProducts(prev => prev.map(p => p.id === id ? { ...p, inStock: nextState, stock: nextState ? (p.stock || 10) : 0 } : p));
       }
     } catch (err) {
-      setProducts(prev => prev.map(p => {
-        if (p.id === id) {
-          return {
-            ...p,
-            inStock: nextState,
-            stock: nextState ? (p.stock || 10) : 0
-          };
-        }
-        return p;
-      }));
+      setProducts(prev => prev.map(p => p.id === id ? { ...p, inStock: nextState, stock: nextState ? (p.stock || 10) : 0 } : p));
     }
 
     showToast(nextState ? '⚡ Item Marked as IN STOCK!' : '🚫 Item Marked as OUT OF STOCK!');
@@ -191,7 +172,6 @@ export default function App() {
 
   const handleSaveProduct = async (productData, editId) => {
     if (editId) {
-      // Edit existing product
       try {
         const res = await fetch(`/api/products/${editId}`, {
           method: 'PUT',
@@ -207,9 +187,8 @@ export default function App() {
       } catch (err) {
         setProducts(prev => prev.map(p => p.id === editId ? { ...p, ...productData } : p));
       }
-      showToast('✔ Product updated successfully!');
+      showToast('✔ Product details updated!');
     } else {
-      // Add new product
       try {
         const res = await fetch('/api/products', {
           method: 'POST',
@@ -228,7 +207,6 @@ export default function App() {
         setProducts(prev => [newObj, ...prev]);
       }
 
-      // Add category to filter list if new
       if (productData.category && !categories.includes(productData.category)) {
         setCategories(prev => [...prev, productData.category]);
       }
@@ -265,7 +243,6 @@ export default function App() {
     setLatestOrder(order);
     setOrders(prev => [order, ...prev]);
 
-    // Automatically deduct stock in client state
     setProducts(prev => prev.map(p => {
       const orderedItem = order.items.find(i => i.id === p.id);
       if (orderedItem) {
@@ -289,7 +266,7 @@ export default function App() {
       {/* Top Academic Banner */}
       <ProjectBadge />
 
-      {/* Main Flipkart Header */}
+      {/* Main Navbar */}
       <Navbar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -299,6 +276,7 @@ export default function App() {
         user={user}
         onLogout={() => {
           setUser(null);
+          try { localStorage.removeItem('snapcart_user'); } catch (e) {}
           showToast('Logged out of session');
         }}
         isAdminView={isAdminView}
@@ -319,7 +297,7 @@ export default function App() {
       <main className="app-content">
         {!isAdminView ? (
           <>
-            {/* Promotional Banner Carousel */}
+            {/* Hero Showcase Banner */}
             <HeroSlider onShopNow={() => setActiveCategory('All')} />
 
             {/* Product Catalog Grid */}
@@ -337,7 +315,7 @@ export default function App() {
             />
           </>
         ) : (
-          /* Admin Management Portal */
+          /* Admin Dashboard */
           <AdminDashboard
             products={products}
             orders={orders}
@@ -359,7 +337,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Modal Overlays */}
+      {/* Modals */}
       <ProductDetailModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
@@ -371,7 +349,7 @@ export default function App() {
       />
 
       {isAuthOpen && (
-        <PhoneOtpModal
+        <AuthModal
           onClose={() => setIsAuthOpen(false)}
           onLoginSuccess={(userData) => {
             setUser(userData);
@@ -418,7 +396,7 @@ export default function App() {
       <div className="toast-container">
         {toasts.map(toast => (
           <div key={toast.id} className="toast">
-            <CheckCircle2 size={18} color="#4ade80" />
+            <CheckCircle2 size={18} color="#10b981" />
             <span>{toast.message}</span>
           </div>
         ))}

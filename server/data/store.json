@@ -114,7 +114,7 @@
       "discount": "16% off",
       "rating": 4.9,
       "ratingsCount": 8900,
-      "stock": 5,
+      "stock": 4,
       "inStock": true,
       "assured": true,
       "image": "/images/headphones.jpg",
@@ -127,7 +127,42 @@
       "description": "Flagship wireless over-ear noise-cancelling headphones featuring Auto NC Optimizer, multi-point connection, and touch sensor controls."
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "OD37545976",
+      "date": "2026-08-13T16:12:25.976Z",
+      "customerName": "K. Teja",
+      "phone": "123456889",
+      "address": "Department of CSE, Student Hostel Block B, Room 402, Campus",
+      "items": [
+        {
+          "id": "prod-6",
+          "title": "Sony WH-1000XM5 Wireless Active Noise Cancelling Headphones",
+          "category": "Other",
+          "price": 24990,
+          "originalPrice": 29990,
+          "discount": "16% off",
+          "rating": 4.9,
+          "ratingsCount": 8900,
+          "stock": 5,
+          "inStock": true,
+          "assured": true,
+          "image": "/images/headphones.jpg",
+          "specs": [
+            "Industry-Leading Active Noise Cancellation",
+            "30-Hour Battery Life with Quick Charge (3 min = 3 hrs)",
+            "Crystal Clear Hands-Free Calling with 8 Mics",
+            "Ultra Lightweight Soft Fit Leatherette"
+          ],
+          "description": "Flagship wireless over-ear noise-cancelling headphones featuring Auto NC Optimizer, multi-point connection, and touch sensor controls.",
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 24990,
+      "paymentMethod": "Cash on Delivery (COD)",
+      "status": "Placed"
+    }
+  ],
   "categories": [
     "Mobiles",
     "Fashion",

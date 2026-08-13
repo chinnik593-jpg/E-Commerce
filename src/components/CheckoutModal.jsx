@@ -9,7 +9,7 @@ export default function CheckoutModal({
   onOrderSuccess
 }) {
   const [address, setAddress] = useState('Department of CSE, Student Hostel Block B, Room 402, Campus');
-  const [name, setName] = useState(user ? user.name : 'K. Taje');
+  const [name, setName] = useState(user ? user.name : 'K. Teja');
   const [phone, setPhone] = useState(user ? user.phone : '9876543210');
   const [paymentMethod, setPaymentMethod] = useState('UPI');
   const [isSubmitting, setIsSubmitting] = useState(false);

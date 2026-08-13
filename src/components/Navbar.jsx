@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ShoppingCart, ShieldCheck, User, LogOut, ChevronDown, Smartphone } from 'lucide-react';
+import { Search, ShoppingBag, ShieldCheck, User, LogOut, Sparkles, LogIn } from 'lucide-react';
 
 export default function Navbar({
   searchTerm,
@@ -22,13 +22,12 @@ export default function Navbar({
   return (
     <header className="navbar">
       <div className="nav-container">
-        {/* SnapCart Logo */}
+        {/* Brand Logo */}
         <a href="#" className="brand-logo" onClick={() => setIsAdminView(false)}>
+          <div className="logo-icon">
+            <Sparkles size={20} />
+          </div>
           <span>SnapCart</span>
-          <span className="brand-subtitle">
-            Explore <span className="plus">Plus</span>
-            <span style={{ color: '#ffe500', fontSize: '0.9rem', lineHeight: 0 }}>✦</span>
-          </span>
         </a>
 
         {/* Search Bar */}
@@ -36,7 +35,7 @@ export default function Navbar({
           <div className="search-input-wrapper">
             <input
               type="text"
-              placeholder="Search for products, brands and more (e.g., Mobile, Denim, Tea, RC Car)..."
+              placeholder="Search for products, categories, specs..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -45,7 +44,7 @@ export default function Navbar({
               onFocus={() => setShowSearchDropdown(true)}
               onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
             />
-            <Search className="search-icon" size={20} />
+            <Search className="search-icon" size={18} />
           </div>
 
           {/* Autocomplete Suggestions Dropdown */}
@@ -60,11 +59,11 @@ export default function Navbar({
                     setShowSearchDropdown(false);
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src={prod.image} alt={prod.title} style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
-                    <span style={{ fontSize: '0.85rem' }}>{prod.title}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <img src={prod.image} alt={prod.title} style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                    <span style={{ fontSize: '0.88rem', fontWeight: 500 }}>{prod.title}</span>
                   </div>
-                  <span style={{ fontSize: '0.8rem', color: '#388e3c', fontWeight: 600 }}>₹{prod.price}</span>
+                  <span style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: 700 }}>₹{prod.price.toLocaleString('en-IN')}</span>
                 </div>
               ))}
             </div>
@@ -76,21 +75,21 @@ export default function Navbar({
           {/* User Auth Status */}
           {user ? (
             <div className="user-profile-badge" onClick={onLogout} title="Click to Logout">
-              <User size={18} />
-              <span>{user.name}</span>
-              <LogOut size={14} style={{ marginLeft: '4px' }} />
+              <User size={16} />
+              <span style={{ fontSize: '0.85rem' }}>{user.name}</span>
+              <LogOut size={14} style={{ marginLeft: '4px', opacity: 0.8 }} />
             </div>
           ) : (
             <button className="login-btn" onClick={onOpenAuth}>
-              <Smartphone size={16} style={{ display: 'inline', marginRight: '4px' }} />
-              Login
+              <LogIn size={16} style={{ display: 'inline', marginRight: '6px' }} />
+              Sign In
             </button>
           )}
 
-          {/* Cart button */}
+          {/* Cart Button */}
           {!isAdminView && (
             <button className="cart-btn" onClick={onOpenCart}>
-              <ShoppingCart size={22} />
+              <ShoppingBag size={18} />
               <span>Cart</span>
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </button>
@@ -101,8 +100,8 @@ export default function Navbar({
             className={`admin-switch-btn ${isAdminView ? 'active' : ''}`}
             onClick={() => setIsAdminView(!isAdminView)}
           >
-            <ShieldCheck size={18} />
-            {isAdminView ? 'Customer Store' : 'Admin Portal'}
+            <ShieldCheck size={16} />
+            {isAdminView ? 'Storefront' : 'Admin Dashboard'}
           </button>
         </div>
       </div>

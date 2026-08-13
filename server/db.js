@@ -202,7 +202,7 @@ export const db = {
     const newOrder = {
       id: "OD" + Date.now().toString().slice(-8),
       date: new Date().toISOString(),
-      customerName: orderData.customerName || "K. Taje",
+      customerName: orderData.customerName || "K. Teja",
       phone: orderData.phone || "9876543210",
       address: orderData.address || "Dept of CSE, Campus Hostel, Room 402",
       items: orderData.items || [],
@@ -262,7 +262,7 @@ export const db = {
         success: true,
         user: {
           phone,
-          name: isAdmin ? "Admin (K. Taje)" : "Customer (" + phone.slice(-4) + ")",
+          name: isAdmin ? "Admin (K. Teja)" : "Customer (" + phone.slice(-4) + ")",
           role: isAdmin ? "admin" : "customer",
           superCoins: 250
         }

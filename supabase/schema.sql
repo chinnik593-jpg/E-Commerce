@@ -1,6 +1,6 @@
 -- =========================================================================
 -- SnapCart E-Commerce Supabase Database Schema Script
--- Department of Computer Science & Engineering | Student Project: K. Taje
+-- Lingayas Institute of Management and Technology | Student Project: K. Teja
 -- Roll No: 23NA1A0595 | Guide: Prof. Prabhakar
 -- =========================================================================
 

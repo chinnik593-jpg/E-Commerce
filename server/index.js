@@ -21,8 +21,9 @@ app.use('/images', express.static(path.join(publicPath, 'images')));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    app: 'Flipkart Clone E-Commerce API',
-    student: 'K. Taje',
+    app: 'SnapCart E-Commerce API',
+    institution: 'Lingayas Institute of Management and Technology',
+    student: 'K. Teja',
     rollNo: '23NA1A0595',
     dept: 'CSE',
     teacher: 'Prof. Prabhakar',
@@ -205,7 +206,8 @@ const startServer = (port) => {
     console.log(`====================================================`);
     console.log(`Flipkart Clone Backend Server Running on Port ${port}`);
     console.log(`Health Check: http://localhost:${port}/api/health`);
-    console.log(`Student: K. Taje | Roll No: 23NA1A0595 | CSE | Prof. Prabhakar`);
+    console.log(`Institution: Lingayas Institute of Management and Technology`);
+    console.log(`Student: K. Teja | Roll No: 23NA1A0595 | CSE | Prof. Prabhakar`);
     console.log(`====================================================`);
   });
 
