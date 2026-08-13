@@ -6,6 +6,7 @@ import HeroSlider from './components/HeroSlider';
 import ProductGrid from './components/ProductGrid';
 import ProductDetailModal from './components/ProductDetailModal';
 import AuthModal from './components/AuthModal';
+import AdminLoginModal from './components/AdminLoginModal';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
 import AdminDashboard from './components/AdminDashboard';
@@ -26,11 +27,12 @@ export default function App() {
   // Real Supabase Session & User State
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
   // UI Modals State
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isAdminAuthOpen, setIsAdminAuthOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
@@ -50,11 +52,7 @@ export default function App() {
 
   // Secure Server-side Admin Verification
   const verifyAdminStatus = async (userEmail) => {
-    if (!userEmail) {
-      setIsAdmin(false);
-      setIsAdminView(false);
-      return;
-    }
+    if (!userEmail) return;
     try {
       const res = await fetch('/api/auth/check-admin', {
         method: 'POST',
@@ -63,13 +61,11 @@ export default function App() {
       });
       if (res.ok) {
         const data = await res.json();
-        setIsAdmin(Boolean(data.isAdmin));
-      } else {
-        setIsAdmin(false);
+        if (data.isAdmin) {
+          setIsAdminAuthenticated(true);
+        }
       }
-    } catch (err) {
-      setIsAdmin(false);
-    }
+    } catch (err) {}
   };
 
   // Restore Supabase Session & Subscribe to Auth Changes
@@ -143,7 +139,7 @@ export default function App() {
     } catch (e) {}
     setUser(null);
     setSession(null);
-    setIsAdmin(false);
+    setIsAdminAuthenticated(false);
     setIsAdminView(false);
     showToast('Logged out of session');
   };
@@ -328,11 +324,12 @@ export default function App() {
         cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
+        onOpenAdminAuth={() => setIsAdminAuthOpen(true)}
         user={user}
         onLogout={handleLogout}
         isAdminView={isAdminView}
         setIsAdminView={setIsAdminView}
-        isAdmin={isAdmin}
+        isAdminAuthenticated={isAdminAuthenticated}
         products={products}
       />
 
@@ -406,6 +403,16 @@ export default function App() {
           showToast={showToast}
         />
       )}
+
+      <AdminLoginModal
+        isOpen={isAdminAuthOpen}
+        onClose={() => setIsAdminAuthOpen(false)}
+        onAdminAuthSuccess={() => {
+          setIsAdminAuthenticated(true);
+          setIsAdminView(true);
+        }}
+        showToast={showToast}
+      />
 
       <CartDrawer
         isOpen={isCartOpen}

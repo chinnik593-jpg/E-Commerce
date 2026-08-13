@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ShoppingBag, ShieldCheck, User, LogOut, Sparkles, LogIn } from 'lucide-react';
+import { Search, ShoppingBag, ShieldCheck, User, LogOut, Sparkles, LogIn, Lock } from 'lucide-react';
 
 export default function Navbar({
   searchTerm,
@@ -7,10 +7,12 @@ export default function Navbar({
   cartCount,
   onOpenCart,
   onOpenAuth,
+  onOpenAdminAuth,
   user,
   onLogout,
   isAdminView,
   setIsAdminView,
+  isAdminAuthenticated,
   products = []
 }) {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -24,6 +26,16 @@ export default function Navbar({
     : '';
 
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+
+  const handleAdminClick = () => {
+    if (isAdminView) {
+      setIsAdminView(false);
+    } else if (isAdminAuthenticated) {
+      setIsAdminView(true);
+    } else {
+      onOpenAdminAuth();
+    }
+  };
 
   return (
     <header className="navbar">
@@ -109,13 +121,18 @@ export default function Navbar({
             </button>
           )}
 
-          {/* Admin Switch Toggle Button (Always visible for easy testing & demo) */}
+          {/* Dedicated Admin Portal Switcher */}
           <button
             className={`admin-switch-btn ${isAdminView ? 'active' : ''}`}
-            onClick={() => setIsAdminView(!isAdminView)}
+            onClick={handleAdminClick}
+            style={{
+              background: isAdminView ? '#0f172a' : '#eff6ff',
+              color: isAdminView ? '#ffffff' : '#2563eb',
+              borderColor: isAdminView ? '#0f172a' : '#bfdbfe'
+            }}
           >
             <ShieldCheck size={16} />
-            {isAdminView ? 'Storefront' : 'Admin Dashboard'}
+            {isAdminView ? 'Storefront' : (isAdminAuthenticated ? 'Admin Dashboard' : 'Admin Login')}
           </button>
         </div>
       </div>
