@@ -11,6 +11,7 @@ export default function Navbar({
   onLogout,
   isAdminView,
   setIsAdminView,
+  isAdmin,
   products = []
 }) {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -18,6 +19,12 @@ export default function Navbar({
   const filteredSuggestions = searchTerm.trim()
     ? products.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5)
     : [];
+
+  const displayName = user
+    ? (user.user_metadata?.full_name || user.user_metadata?.name || user.email)
+    : '';
+
+  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
 
   return (
     <header className="navbar">
@@ -75,14 +82,22 @@ export default function Navbar({
           {/* User Auth Status */}
           {user ? (
             <div className="user-profile-badge" onClick={onLogout} title="Click to Logout">
-              <User size={16} />
-              <span style={{ fontSize: '0.85rem' }}>{user.name}</span>
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={displayName}
+                  style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
+                />
+              ) : (
+                <User size={16} />
+              )}
+              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{displayName}</span>
               <LogOut size={14} style={{ marginLeft: '4px', opacity: 0.8 }} />
             </div>
           ) : (
             <button className="login-btn" onClick={onOpenAuth}>
               <LogIn size={16} style={{ display: 'inline', marginRight: '6px' }} />
-              Sign In
+              Sign in with Google
             </button>
           )}
 
@@ -95,14 +110,16 @@ export default function Navbar({
             </button>
           )}
 
-          {/* Admin Switch Toggle Button */}
-          <button
-            className={`admin-switch-btn ${isAdminView ? 'active' : ''}`}
-            onClick={() => setIsAdminView(!isAdminView)}
-          >
-            <ShieldCheck size={16} />
-            {isAdminView ? 'Storefront' : 'Admin Dashboard'}
-          </button>
+          {/* Admin Switch Toggle Button (Visible for authorized admin session) */}
+          {isAdmin && (
+            <button
+              className={`admin-switch-btn ${isAdminView ? 'active' : ''}`}
+              onClick={() => setIsAdminView(!isAdminView)}
+            >
+              <ShieldCheck size={16} />
+              {isAdminView ? 'Storefront' : 'Admin Dashboard'}
+            </button>
+          )}
         </div>
       </div>
     </header>

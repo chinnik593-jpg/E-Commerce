@@ -125,26 +125,13 @@ app.get('/api/categories', (req, res) => {
   res.json(db.getCategories());
 });
 
-// 9. Auth Routes (Phone OTP)
-app.post('/api/auth/send-otp', (req, res) => {
-  const { phone } = req.body;
-  if (!phone || phone.length < 10) {
-    return res.status(400).json({ error: 'Valid 10-digit mobile number required' });
-  }
-  const result = db.sendOtp(phone);
-  res.json(result);
-});
-
-app.post('/api/auth/verify-otp', (req, res) => {
-  const { phone, otp } = req.body;
-  if (!phone || !otp) {
-    return res.status(400).json({ error: 'Phone number and OTP code required' });
-  }
-  const result = db.verifyOtp(phone, otp);
-  if (!result.success) {
-    return res.status(400).json(result);
-  }
-  res.json(result);
+// Secure Server-side Admin Authorization check endpoint
+app.post('/api/auth/check-admin', (req, res) => {
+  const { email } = req.body;
+  // Authorized admin emails list managed on server side / database
+  const ADMIN_EMAILS = ['k.teja.cse@gmail.com', 'k.teja.cse@snapcart.com', 'admin.snapcart@gmail.com'];
+  const isAdmin = Boolean(email && ADMIN_EMAILS.includes(email.toLowerCase().trim()));
+  res.json({ isAdmin });
 });
 
 // 10. Orders Routes

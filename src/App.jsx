@@ -12,6 +12,7 @@ import AdminDashboard from './components/AdminDashboard';
 import AdminProductModal from './components/AdminProductModal';
 import OrderSuccessModal from './components/OrderSuccessModal';
 import { initialProducts } from '../server/seedData';
+import { supabase } from './supabaseClient';
 import { CheckCircle2 } from 'lucide-react';
 
 export default function App() {
@@ -21,14 +22,11 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  const [user, setUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem('snapcart_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch (e) {
-      return null;
-    }
-  });
+  
+  // Real Supabase Session & User State
+  const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // UI Modals State
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -49,6 +47,51 @@ export default function App() {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, 3000);
   };
+
+  // Secure Server-side Admin Verification
+  const verifyAdminStatus = async (userEmail) => {
+    if (!userEmail) {
+      setIsAdmin(false);
+      setIsAdminView(false);
+      return;
+    }
+    try {
+      const res = await fetch('/api/auth/check-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userEmail })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setIsAdmin(Boolean(data.isAdmin));
+      } else {
+        setIsAdmin(false);
+      }
+    } catch (err) {
+      setIsAdmin(false);
+    }
+  };
+
+  // Restore Supabase Session & Subscribe to Auth Changes
+  useEffect(() => {
+    // 1. Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      verifyAdminStatus(currentUser?.email);
+    });
+
+    // 2. Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      verifyAdminStatus(currentUser?.email);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Fetch initial products & orders
   const fetchProducts = async () => {
@@ -92,6 +135,18 @@ export default function App() {
     fetchCategories();
     fetchOrders();
   }, []);
+
+  // Real Logout Handler
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {}
+    setUser(null);
+    setSession(null);
+    setIsAdmin(false);
+    setIsAdminView(false);
+    showToast('Logged out of session');
+  };
 
   // Cart Handlers
   const handleAddToCart = (product) => {
@@ -274,13 +329,10 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
         user={user}
-        onLogout={() => {
-          setUser(null);
-          try { localStorage.removeItem('snapcart_user'); } catch (e) {}
-          showToast('Logged out of session');
-        }}
+        onLogout={handleLogout}
         isAdminView={isAdminView}
         setIsAdminView={setIsAdminView}
+        isAdmin={isAdmin}
         products={products}
       />
 
@@ -351,12 +403,6 @@ export default function App() {
       {isAuthOpen && (
         <AuthModal
           onClose={() => setIsAuthOpen(false)}
-          onLoginSuccess={(userData) => {
-            setUser(userData);
-            if (userData.role === 'admin') {
-              setIsAdminView(true);
-            }
-          }}
           showToast={showToast}
         />
       )}
@@ -374,7 +420,7 @@ export default function App() {
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
         cartItems={cart}
-        user={user}
+        user={user ? { name: user.user_metadata?.full_name || user.user_metadata?.name || user.email, email: user.email } : null}
         onOrderSuccess={handleOrderSuccess}
       />
 
