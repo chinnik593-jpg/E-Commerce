@@ -24,14 +24,14 @@ export default function OrderSuccessModal({ order, onClose }) {
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
-            justify-content: 'center',
+            justifyContent: 'center',
             margin: '0 auto 16px'
           }}>
             <PackageCheck size={36} />
           </div>
 
           <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1e293b', marginBottom: '4px' }}>
-            Thank You for Shopping on Flipkart!
+            Thank You for Shopping on SnapCart!
           </h2>
 
           <p style={{ color: '#64748b', fontSize: '0.88rem', marginBottom: '16px' }}>

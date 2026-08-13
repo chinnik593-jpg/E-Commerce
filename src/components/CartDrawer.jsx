@@ -20,7 +20,7 @@ export default function CartDrawer({
       <div className="cart-drawer" onClick={e => e.stopPropagation()}>
         <div className="cart-header">
           <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShoppingBag size={20} /> My Flipkart Cart ({cartItems.length})
+            <ShoppingBag size={20} /> My SnapCart Cart ({cartItems.length})
           </h3>
           <button className="close-btn" onClick={onClose}><X size={20} /></button>
         </div>

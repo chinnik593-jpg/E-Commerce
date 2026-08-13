@@ -90,7 +90,7 @@ export default function PhoneOtpModal({ onClose, onLoginSuccess, showToast }) {
         <div className="modal-header">
           <h3>
             <Smartphone size={20} style={{ display: 'inline', marginRight: '8px' }} />
-            Flipkart Mobile Login
+            SnapCart Mobile Login
           </h3>
           <button className="close-btn" onClick={onClose}><X size={20} /></button>
         </div>

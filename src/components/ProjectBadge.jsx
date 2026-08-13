@@ -7,7 +7,7 @@ export default function ProjectBadge() {
       <div className="academic-info">
         <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600 }}>
           <GraduationCap size={16} color="#38bdf8" />
-          Academic Project: Flipkart Full-Stack Web App
+          Academic Project: SnapCart E-Commerce App
         </span>
         <span className="academic-badge">Student: K. Taje</span>
         <span className="academic-badge">Roll No: 23NA1A0595</span>

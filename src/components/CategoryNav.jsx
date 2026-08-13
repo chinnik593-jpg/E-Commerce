@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Shirt, Home, ShoppingBag, Gamepad2, Grid, PackageMore } from 'lucide-react';
+import { Smartphone, Shirt, Home, ShoppingBag, Gamepad2, Grid, Package } from 'lucide-react';
 
 const CATEGORY_ICONS = {
   All: Grid,
@@ -8,7 +8,7 @@ const CATEGORY_ICONS = {
   Home: Home,
   Grocery: ShoppingBag,
   Toys: Gamepad2,
-  Other: PackageMore
+  Other: Package
 };
 
 export default function CategoryNav({ categories = [], activeCategory, onSelectCategory }) {
@@ -18,7 +18,7 @@ export default function CategoryNav({ categories = [], activeCategory, onSelectC
     <nav className="category-bar">
       <div className="category-container">
         {allCategories.map((cat) => {
-          const IconComponent = CATEGORY_ICONS[cat] || PackageMore;
+          const IconComponent = CATEGORY_ICONS[cat] || Package;
           const isActive = activeCategory === cat;
 
           return (

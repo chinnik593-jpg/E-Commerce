@@ -43,7 +43,7 @@ export default function AdminDashboard({
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a' }}>
-            Flipkart Inventory & Seller Dashboard
+            SnapCart Inventory & Seller Dashboard
           </h2>
           <p style={{ color: '#64748b', fontSize: '0.85rem' }}>
             Manage product inventory, toggle stock statuses, add items, and track orders.

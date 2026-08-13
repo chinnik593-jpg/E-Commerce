@@ -22,9 +22,9 @@ export default function Navbar({
   return (
     <header className="navbar">
       <div className="nav-container">
-        {/* Flipkart Logo */}
+        {/* SnapCart Logo */}
         <a href="#" className="brand-logo" onClick={() => setIsAdminView(false)}>
-          <span>Flipkart</span>
+          <span>SnapCart</span>
           <span className="brand-subtitle">
             Explore <span className="plus">Plus</span>
             <span style={{ color: '#ffe500', fontSize: '0.9rem', lineHeight: 0 }}>✦</span>

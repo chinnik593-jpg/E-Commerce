@@ -72,7 +72,7 @@ export default function CheckoutModal({
         <div className="modal-header">
           <h3>
             <ShieldCheck size={20} style={{ display: 'inline', marginRight: '6px' }} />
-            Flipkart Secure Checkout
+            SnapCart Secure Checkout
           </h3>
           <button className="close-btn" onClick={onClose}><X size={20} /></button>
         </div>

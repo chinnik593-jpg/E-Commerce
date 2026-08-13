@@ -200,10 +200,21 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`Flipkart Clone Backend Server Running on Port ${PORT}`);
-  console.log(`Health Check: http://localhost:${PORT}/api/health`);
-  console.log(`Student: K. Taje | Roll No: 23NA1A0595 | CSE | Prof. Prabhakar`);
-  console.log(`====================================================`);
-});
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    console.log(`====================================================`);
+    console.log(`Flipkart Clone Backend Server Running on Port ${port}`);
+    console.log(`Health Check: http://localhost:${port}/api/health`);
+    console.log(`Student: K. Taje | Roll No: 23NA1A0595 | CSE | Prof. Prabhakar`);
+    console.log(`====================================================`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} in use, retrying on port ${port + 1}...`);
+      startServer(port + 1);
+    }
+  });
+};
+
+startServer(PORT);
